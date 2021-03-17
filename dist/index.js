@@ -55,7 +55,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isDarwin = exports.isWindows = exports.getAllurectl = void 0;
 const core = __importStar(__webpack_require__(186));
 const tc = __importStar(__webpack_require__(784));
-const path_1 = __importDefault(__webpack_require__(622));
+const fs_1 = __importDefault(__webpack_require__(747));
 const IS_WINDOWS = isWindows();
 const IS_DARWIN = isDarwin();
 const downloadUrl = (version, arch) => `https://bintray.com/qameta/generic/download_file?file_path=allurectl%2F${version}%2Fallurectl_${arch2suffix(arch)}`;
@@ -80,8 +80,7 @@ function getAllurectl(version, arch) {
             toolPath = yield tc.cacheFile(allurectlBinary, 'allurectl', 'allurectl', version, arch);
             core.debug(`Tool cached ${toolPath}`);
         }
-        const toolDir = path_1.default.dirname(toolPath);
-        core.debug(`Tool directory ${toolDir}`);
+        fs_1.default.chmodSync(toolPath, 0o755);
         core.addPath(toolPath);
     });
 }

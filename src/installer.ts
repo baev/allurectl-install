@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
-import path from 'path'
+import fs from 'fs'
 
 const IS_WINDOWS = isWindows()
 const IS_DARWIN = isDarwin()
@@ -39,8 +39,7 @@ export async function getAllurectl(
     core.debug(`Tool cached ${toolPath}`)
   }
 
-  const toolDir = path.dirname(toolPath)
-  core.debug(`Tool directory ${toolDir}`)
+  fs.chmodSync(toolPath, 0o755)
   core.addPath(toolPath)
 }
 
