@@ -48,32 +48,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isWindows = exports.getAllurectl = void 0;
+exports.isDarwin = exports.isWindows = exports.getAllurectl = void 0;
 const core = __importStar(__webpack_require__(186));
 const tc = __importStar(__webpack_require__(784));
+const path_1 = __importDefault(__webpack_require__(622));
+const IS_WINDOWS = isWindows();
+const IS_DARWIN = isDarwin();
 const downloadUrl = (version, arch) => `https://bintray.com/qameta/generic/download_file?file_path=allurectl%2F${version}%2Fallurectl_${arch2suffix(arch)}`;
 const arch2suffix = (arch) => {
-    if (arch === 'x86') {
-        return IS_WINDOWS ? 'windows_386.exe' : 'linux_386';
+    if (IS_DARWIN) {
+        return 'darwin_amd64';
     }
-    if (arch === 'x64') {
-        return IS_WINDOWS ? 'windows_amd64.exe' : 'linux_amd64';
+    if (IS_WINDOWS) {
+        return arch === 'x86' ? 'windows_386.exe' : 'windows_amd64.exe';
     }
-    throw new Error(`unsupported arch ${arch}`);
+    return arch === 'x86' ? 'linux_386' : 'linux_amd64';
 };
-const IS_WINDOWS = isWindows();
 function getAllurectl(version, arch) {
     return __awaiter(this, void 0, void 0, function* () {
-        const toolPath = tc.find('allurectl', version, arch);
+        let toolPath = tc.find('allurectl', version, arch);
         if (toolPath) {
             core.debug(`Tool found in cache ${toolPath}`);
         }
         else {
             const allurectlBinary = yield tc.downloadTool(downloadUrl(version, arch));
-            const path = yield tc.cacheFile(allurectlBinary, 'allurectl', 'allurectl', version, arch);
-            core.addPath(path);
+            toolPath = yield tc.cacheFile(allurectlBinary, 'allurectl', 'allurectl', version, arch);
         }
+        const toolDir = path_1.default.dirname(toolPath);
+        core.addPath(toolDir);
     });
 }
 exports.getAllurectl = getAllurectl;
@@ -81,6 +87,10 @@ function isWindows() {
     return process.platform === 'win32';
 }
 exports.isWindows = isWindows;
+function isDarwin() {
+    return process.platform === 'darwin';
+}
+exports.isDarwin = isDarwin;
 
 
 /***/ }),
