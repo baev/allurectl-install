@@ -1,16 +1,16 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as constants from './constants'
+import {getAllurectl} from './installer'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const version = core.getInput(constants.INPUT_VERSION)
+    const arch = core.getInput(constants.INPUT_ARCHITECTURE, {required: true})
+    if (!['x86', 'x64'].includes(arch)) {
+      throw new Error(`architecture "${arch}" is not in [x86 | x64]`)
+    }
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
+    await getAllurectl(version, arch)
   } catch (error) {
     core.setFailed(error.message)
   }

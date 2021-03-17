@@ -1,11 +1,14 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'allurectl install'
+description: 'Install allurectl tool'
+author: 'Qameta Software'
 inputs:
-  milliseconds: # change this
+  version:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The allurectl version to make available on the path'
+  architecture:
+    required: false
+    description: 'The architecture (x86, x64) of the package'
+    default: "x64"
 runs:
   using: 'node12'
   main: 'dist/index.js'
