@@ -28,6 +28,7 @@ export async function getAllurectl(
     core.debug(`Tool found in cache ${toolPath}`)
   } else {
     const allurectlBinary = await tc.downloadTool(downloadUrl(version, arch))
+    core.debug(`Tool downloaded to ${allurectlBinary}`)
     toolPath = await tc.cacheFile(
       allurectlBinary,
       'allurectl',
@@ -35,10 +36,12 @@ export async function getAllurectl(
       version,
       arch
     )
+    core.debug(`Tool cached ${toolPath}`)
   }
 
   const toolDir = path.dirname(toolPath)
-  core.addPath(toolDir)
+  core.debug(`Tool directory ${toolDir}`)
+  core.addPath(toolPath)
 }
 
 export function isWindows(): boolean {

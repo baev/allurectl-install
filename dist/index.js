@@ -76,10 +76,13 @@ function getAllurectl(version, arch) {
         }
         else {
             const allurectlBinary = yield tc.downloadTool(downloadUrl(version, arch));
+            core.debug(`Tool downloaded to ${allurectlBinary}`);
             toolPath = yield tc.cacheFile(allurectlBinary, 'allurectl', 'allurectl', version, arch);
+            core.debug(`Tool cached ${toolPath}`);
         }
         const toolDir = path_1.default.dirname(toolPath);
-        core.addPath(toolDir);
+        core.debug(`Tool directory ${toolDir}`);
+        core.addPath(toolPath);
     });
 }
 exports.getAllurectl = getAllurectl;
