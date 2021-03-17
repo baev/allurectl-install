@@ -48,14 +48,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isDarwin = exports.isWindows = exports.getAllurectl = void 0;
 const core = __importStar(__webpack_require__(186));
 const tc = __importStar(__webpack_require__(784));
-const fs_1 = __importDefault(__webpack_require__(747));
+const fs_1 = __webpack_require__(747);
 const IS_WINDOWS = isWindows();
 const IS_DARWIN = isDarwin();
 const downloadUrl = (version, arch) => `https://bintray.com/qameta/generic/download_file?file_path=allurectl%2F${version}%2Fallurectl_${arch2suffix(arch)}`;
@@ -77,10 +74,10 @@ function getAllurectl(version, arch) {
         else {
             const allurectlBinary = yield tc.downloadTool(downloadUrl(version, arch));
             core.debug(`Tool downloaded to ${allurectlBinary}`);
+            yield fs_1.promises.chmod(allurectlBinary, 0o755);
             toolPath = yield tc.cacheFile(allurectlBinary, 'allurectl', 'allurectl', version, arch);
             core.debug(`Tool cached ${toolPath}`);
         }
-        fs_1.default.chmodSync(toolPath, 0o755);
         core.addPath(toolPath);
     });
 }

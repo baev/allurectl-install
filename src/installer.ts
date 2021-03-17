@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
-import fs from 'fs'
+import {promises as fsp} from 'fs'
 
 const IS_WINDOWS = isWindows()
 const IS_DARWIN = isDarwin()
@@ -29,6 +29,7 @@ export async function getAllurectl(
   } else {
     const allurectlBinary = await tc.downloadTool(downloadUrl(version, arch))
     core.debug(`Tool downloaded to ${allurectlBinary}`)
+    await fsp.chmod(allurectlBinary, 0o755)
     toolPath = await tc.cacheFile(
       allurectlBinary,
       'allurectl',
@@ -39,7 +40,6 @@ export async function getAllurectl(
     core.debug(`Tool cached ${toolPath}`)
   }
 
-  fs.chmodSync(toolPath, 0o755)
   core.addPath(toolPath)
 }
 
