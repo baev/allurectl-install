@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "allurectl-setup",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Github Action that setup allurectl tools",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
