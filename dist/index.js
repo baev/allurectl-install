@@ -55,7 +55,7 @@ const tc = __importStar(__webpack_require__(784));
 const fs_1 = __webpack_require__(747);
 const IS_WINDOWS = isWindows();
 const IS_DARWIN = isDarwin();
-const downloadUrl = (version, arch) => `https://bintray.com/qameta/generic/download_file?file_path=allurectl%2F${version}%2Fallurectl_${arch2suffix(arch)}`;
+const downloadUrl = (version, arch) => `https://github.com/allure-framework/allurectl/releases/download/${version}/allurectl_${arch2suffix(arch)}`;
 const arch2suffix = (arch) => {
     if (IS_DARWIN) {
         return 'darwin_amd64';

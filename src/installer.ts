@@ -6,7 +6,7 @@ const IS_WINDOWS = isWindows()
 const IS_DARWIN = isDarwin()
 
 const downloadUrl = (version: string, arch: string): string =>
-  `https://bintray.com/qameta/generic/download_file?file_path=allurectl%2F${version}%2Fallurectl_${arch2suffix(
+  `https://github.com/allure-framework/allurectl/releases/download/${version}/allurectl_${arch2suffix(
     arch
   )}`
 const arch2suffix = (arch: string): string => {
